@@ -1,0 +1,16 @@
+127.0.0.1   local.stage
+127.0.0.1	zf-tutorial.localhost
+127.0.0.1	quickstart.local
+127.0.0.1	localhost
+127.0.1.1	survey-HP-Pro-3300-Series-MT
+127.0.0.1	local.surveyanyplace
+192.168.56.101  phpmyadmin
+192.168.56.101  surveyanyplace.dev www.surveyanyplace.dev
+192.168.56.101  surveyanyplace.v2 www.surveyanyplace.v2
+
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
