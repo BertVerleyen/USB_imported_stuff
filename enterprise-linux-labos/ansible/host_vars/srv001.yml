@@ -1,0 +1,125 @@
+#mariadb
+
+dbname: mariadb
+dbuser: mariadbusr
+dbpasswd: mariadbpassw 
+
+
+#wordpress
+
+dbname: wordpressdb
+dbsuser: wordpressusr
+dbpasswd: wordpresspasww
+
+
+#sambausers
+
+samb_users:
+  - name: franka
+    password: franka
+    surname: Frank
+    given_name: Assengraaf
+    groups:
+      - directie
+      - staf
+      - financieringen
+      - verzekeringen
+
+  
+
+  - name: femkevdv
+    password: femkevdv
+    surname: Femke 
+    given_name: Van de Vorst
+    groups: 
+      - verzekeringen
+
+  - name: hansb
+    password: hansb
+    surname: Hans 
+    given_name: Berghuis
+    groups: 
+      - staf
+
+  - name: kimberlyvh
+    password: kimberlyvh
+    surname: Kimberly 
+    given_name: Van Herk
+    groups: 
+      - verzekeringen
+
+  - name: taniav
+    password: taniav 
+    surname: Tania 
+    given_name: Versantvoort
+    groups: 
+      - verzekeringen
+
+  - name: peterj
+    password: peterj
+    surname: Peter 
+    given_name: Jongsma
+    groups: 
+      - financieringen
+
+  - name: maaiked 
+    password: maaiked
+    surname: Maaike 
+    given_name: Doom
+    groups: 
+      - directie
+      - staf
+      - financieringen
+      - verzekeringen
+      - beheer
+      - publiek
+
+  - name: bertv
+    password: bertv
+    surname: Bert 
+    given_name: Verleyen
+    groups: 
+      - directie
+      - staf
+      - financieringen
+      - verzekeringen
+      - beheer
+      - publiek
+
+#sambausers
+
+samba_shares:
+
+   - name: directie
+     valid_users: "publiek"
+     write_list:
+     group: directie
+     mask: 
+     mode: 770
+
+
+
+  
+#dhcp values hosts
+
+   lease_time : 600
+   max_lease: 7200
+ 
+       
+        
+   host_name: 
+       - srv001
+       - srv002
+       
+   netmask: 255.255.0.0 
+   range:
+       - 172.16.100.1
+       - 172.16.255.253
+
+   routers: 172.100.1.1
+   host: 
+   MACaddress: C4:46:19:03:CE:8A
+    
+      
+
+

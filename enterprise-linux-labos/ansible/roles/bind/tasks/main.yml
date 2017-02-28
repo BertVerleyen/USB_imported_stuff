@@ -1,0 +1,87 @@
+---
+- name: Install Bind packages
+  yum: pkg={{ item }} state=installed
+  with_items: 
+     - bind
+     - bind-utils
+  tags: package
+
+- name: Start Bind service
+  service: name=named state=running enabled=true
+
+- name: Enable Bind through firewall
+  #firewalld -cmd --add -service rcp-bind in machine wordt:  
+  firewalld: 
+      service=dns
+      state=enabled
+      permanent=yes
+      
+# - name: valideer named.conf
+  # template: 
+       # src: named.conf
+       # dest: /etc/named.conf
+       # validate: named-checkconf
+       # owner: root
+       # group: named       
+       # mode: 0644
+       
+# - name: setup zone directories
+  # file: dest={{ bind_base_zones_path }}/{{ item }} state=directory owner={{ bind_user }} group={{ bind_group }} mode=0755
+  # with_items:
+  # - masters
+  # - slaves
+  # tags: configuration
+
+# - name: setup zones
+  # action: template src=named.conf.local.{{ item }}.j2 dest={{ bind_config_basepath }}/named.conf.local.{{ item }} owner={{ bind_user }} group={{ bind_group }} mode=0600
+  # with_items:
+  # - master
+  # - slave
+  # notify: reload bind
+  # tags: configuration
+
+# - name: configure bind
+  # copy: src=named.conf dest={{ bind_config_basepath }}/named.conf owner={{ bind_user }} group={{ bind_group }} mode=0600 validate='named-checkconf %s'
+  # notify: restart bind
+  # tags: configuration
+
+# - name: configure bind options
+  # template: src=named.conf.options.j2 dest={{ bind_config_basepath }}/named.conf.options owner={{ bind_user }} group={{ bind_group }} mode=0600 validate='named-checkconf %s'
+  # notify: restart bind
+  # tags: configuration
+
+# - name: Copy master zone files
+  # copy: src={{ bind_masterzones_path }}/db.{{ item.name }} dest={{ bind_base_zones_path }}/{{bind_masterzones_path}} owner={{ bind_user }} group={{ bind_group }}
+  # with_items: bind_config_master_zones
+  # notify: restart bind
+  # tags: zones
+
+# - name: start/stop bind service
+  # service: name={{ bind_service_name }} state={{ bind_service_state }} enabled={{ bind_service_enabled }}
+  # tags: service
+  
+- name: Create reverse lookup zone file
+  template:
+     src=reverse_zone.j2
+     dest=/var/named/{{ item.reverse }}.in-addr.arpa
+     owner=root
+     group=named
+     mode=0640
+     setype=named_zone_t
+     #validate="named:checkzone {{ item.reverse }}.in.addr.arpa %s"
+  with_items: bind_zone_networks
+  notify: Restart BIND
+  tags: bind 
+
+- name: Create forward lookup zone file
+  template:
+     src=forward_zone.j2
+     dest=/var/named/{{ bind_zone_name }}.in-addr.arpa
+     owner=root
+     group=named
+     mode=0640
+     setype=named_zone_t
+     #validate="named:checkzone {{ item.reverse }}.in.addr.arpa %s"
+  with_items: bind_zone_networks
+  notify: Restart BIND
+  tags: bind    

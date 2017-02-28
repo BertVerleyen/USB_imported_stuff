@@ -1,0 +1,10 @@
+# File: roles/samba/handlers/main.yml
+---
+- name: Restart Samba
+  service: name={{ item }} state=restarted
+  with_items:
+    - smb
+    - nmb
+  tags: samba
+
+

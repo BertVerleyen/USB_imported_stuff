@@ -1,0 +1,37 @@
+# roles/common/main.yml
+---
+- name: Install common packages
+  yum: pkg={{item}} state=installed
+  with_items:
+    - http://epel.mirror.nucleus.be/7/x86_64/e/epel-release-7-2.noarch.rpm
+
+- name: Install common packages
+  yum: pkg={{item}} state=installed
+  with_items:
+    - libselinux-python
+    
+    
+    
+    
+- name: Install extra repositories from rpm
+  yum: pkg={{item}} state=installed
+  with_items: common_repositories
+  tags: common
+
+# - name: Install common packages
+  # yum: pkg={{item}} state=installed
+  # with_items: common_packages
+  # tags: common
+
+- name: Enable firewall
+  service: name=firewalld state=running enabled=true
+  tags: common
+
+- name: Put host name in the hosts file
+  lineinfile:
+    dest=/etc/hosts
+    state=present
+    line="{{ ansible_all_ipv4_addresses|last }} {{ ansible_hostname }} {{ ansible_hostname }}.{{ ansible_domain }}"
+    regexp="^{{ ansible_all_ipv4_addresses }}"
+  tags: common
+

@@ -1,0 +1,19 @@
+# site.yml
+---
+- hosts: srv001
+  sudo: true
+  roles:
+    - common
+    - bind
+    - samba
+    - ftp
+    - dhcp
+
+- hosts: srv002
+  sudo: true
+  roles:
+    - common
+    - db
+    - web
+    - wordpress
+

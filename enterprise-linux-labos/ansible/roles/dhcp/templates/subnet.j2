@@ -1,0 +1,64 @@
+
+
+
+
+
+
+subnet 192.168.1.0 netmask 255.255.255.0 {
+        option routers                  192.168.1.254;
+        option subnet-mask              255.255.255.0;
+        option domain-search              "example.com";
+        option domain-name-servers       192.168.1.1;
+        option time-offset              -18000;     # Eastern Standard Time
+	range 192.168.1.10 192.168.1.100;
+}
+
+
+
+
+
+
+default-lease-time 600;
+max-lease-time 7200;
+subnet 10.0.0.0 netmask 255.255.255.0 {
+	option subnet-mask 255.255.255.0;
+	option routers 10.0.0.1;
+	range 10.0.0.5 10.0.0.15;
+}
+subnet 172.16.0.0 netmask 255.255.255.0 {
+	option subnet-mask 255.255.255.0;
+	option routers 172.16.0.1;
+	range 172.16.0.5 172.16.0.15;
+}
+host example0 {
+	hardware ethernet 00:1A:6B:6A:2E:0B;
+	fixed-address 10.0.0.20;
+}
+host example1 {
+	hardware ethernet 00:1A:6B:6A:2E:0B;
+	fixed-address 172.16.0.20;
+}
+------------------------------------------------------
+
+
+subnet {{subnetadd}} netmask {{netmask}} {
+
+subnet-mask {{netmask}};
+routers {{option_routers}};
+range {{range[0]}} {{range[1]}};
+
+}
+host {{host_name}} {
+
+option host-name "{{host_name_domainname}}"
+hardware_ethernet {{hardware_ethernet}} 
+fixed_address {{fixed_address}}
+
+}
+
+  {% for host in host_names %}
+   host {{ host_name }}">
+   host MAC address {{MAC_address}}">
+  {% endfor %}
+  
+

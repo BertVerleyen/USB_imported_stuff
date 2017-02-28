@@ -1,0 +1,41 @@
+# roles/ftp/tasks/main.yml
+---
+
+- name: Install packages for FTP
+  yum: name={{ item }} state=installed
+  with_items:
+    - vsftpd
+  tags: ftp
+
+- name: Set firewall rules
+  firewalld:
+    service=ftp
+    state=enabled
+    permanent={{ item }}
+  with_items:
+    - true
+    - false
+  tags: ftp
+
+- name: Enable connection tracking
+  lineinfile:
+    dest=/etc/sysconfig/iptables-config
+    regexp='^IPTABLES_MODULES='
+    line='IPTABLES_MODULES="ip_conntrack_ftp"'
+    state=present
+  tags: ftp
+  notify: reload firewall
+
+# TODO: SELinux settings (tip: setsebool)
+
+- name: Configuration
+  template:
+    src=vsftpd.conf.j2
+    dest=/etc/vsftpd/vsftpd.conf
+    # TODO: set permissions
+  notify: Restart FTP
+  tags: ftp
+
+- name: Start FTP service
+  service: name=vsftpd state=started enabled=true
+  tags: ftp
